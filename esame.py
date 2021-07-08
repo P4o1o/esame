@@ -13,7 +13,7 @@ class CSVTimeSeriesFile:
         try:
             file = open(self.name, "r")
         except Exception as e:
-            raise ExamException("file " + self.name + ' non trovato')
+            raise ExamException('file "{}" non trovato'.format(self.name))
         # inizializzo la lista che sarà restituita dal metodo
         result = []
         # per ogni riga nel file
@@ -23,7 +23,7 @@ class CSVTimeSeriesFile:
                 elements = line.split(",")
                 lista = [int(elements[0]), float(elements[1])]
             except Exception as e:
-                # se ci sono campi vuoti o con meno di 2 colonne o righe non in formato csv ignoro
+                # se ci sono campi vuoti o con meno di 2 colonne o righe non in formato csv ignoro la riga
                 continue
             # aggiungo la lista [ora, misurazione] alla lista risultato
             result.append(lista)
@@ -48,7 +48,7 @@ def compute_daily_max_difference(time_series):
         if day_start_epoch > previous_epoch:
             # elimino un altrimenti lista vuota iniziale
             if previous_epoch != 0:
-                # aggiungo il giorno precedente alla lista totale
+                # aggiungo una copia della lista del giorno precedente alla lista totale
                 temperatures.append(temperatures_series.copy())
             # pulisco la lista giornaliera
             temperatures_series.clear()
@@ -58,6 +58,9 @@ def compute_daily_max_difference(time_series):
             raise ExamException('timestamp "{}" fuori ordine'.format(i))
         # aggiungo la misurazione alla lista giornaliera
         temperatures_series.append(time_series[i][1])
+        # aggiungo l'ultima giornata
+        if i == (len(time_series) - 1):
+            temperatures.append(temperatures_series.copy())
     for days in temperatures:
         # cerco massimo e minimo di ogni singolo giorno
         minimo = 1000
