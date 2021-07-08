@@ -19,7 +19,7 @@ class CSVTimeSeriesFile:
             raise ExamException('file "{}" non trovato'.format(self.name))
         # inizializzo la lista che sarà restituita dal metodo
         result = []
-        int i = 0
+        i = 0
         # per ogni riga nel file
         for line in file:
             try:
@@ -56,7 +56,7 @@ def compute_daily_max_difference(time_series):
             raise ExamException('time series deve essere una lista di liste del tipo [epoch(int), temp(float/int)] su epoch ho "{}"'.format(type(time_series[i][0])))
         if not (isinstance(time_series[i][1], float) or isinstance(time_series[i][1], int)):
             raise ExamException('time series deve essere una lista di liste del tipo [epoch(int), temp(float/int)] su temp ho "{}"'.format(type(time_series[i][0])))
-        if i > 0 and (time_series[i][0] =< time_series[i - 1][0]):
+        if i > 0 and time_series[i][0] <= time_series[i-1][0]:
             raise ExamException('la time series non è ordinata')
         # trovo il giorno a cui appartiene l'epoche del giorno 'i'
         day_start_epoch = time_series[i][0] - (time_series[i][0] % 86400)
